@@ -65,7 +65,6 @@ class Routes {
         const dSchema={
             _nombre : nombre,
             _localidad : localidad,
-            _fInicio : fInicio,
             _presupuesto : presupuesto,
             _precioH : precioH,
             _precioHorm : precioHorm,
@@ -77,11 +76,29 @@ class Routes {
             .catch( (err: any) => res.send('Error: '+ err)) 
         await db.desconectarBD()
     }
+
+    private postPilote = async (req: Request, res: Response) => {
+        const { identif, nombreObra, diametro , profundidad } = req.body
+        await db.conectarBD()
+        const dSchema={
+            _identif : identif,
+            _nombreObra : nombreObra,
+            _diametro : diametro,
+            _profundidad : profundidad,
+        }
+        const oSchema = new Pilotes(dSchema)
+        await oSchema.save()
+            .then( (doc) => res.send(doc))
+            .catch( (err: any) => res.send('Error: '+ err)) 
+        await db.desconectarBD()
+    }
     
     misRutas(){
         this._router.get('/obras', this.getObras),
         this._router.get('/obra/:alias', this.getObra),
-        this._router.post('/', this.postObra)
+        this._router.post('/', this.postObra),
+        this._router.post('/pilotes', this.postPilote)
+        
     }
 }
 

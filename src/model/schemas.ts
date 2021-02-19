@@ -4,7 +4,6 @@ const ObraSchema = new Schema({
     _nombre: String,
     _alias : String,
     _localidad: String,
-    _fInicio: Date,
     _presupuesto: Number,
     _precioH: Number,
     _precioHorm: Number,

@@ -66,13 +66,27 @@ class Routes {
             const dSchema = {
                 _nombre: nombre,
                 _localidad: localidad,
-                _fInicio: fInicio,
                 _presupuesto: presupuesto,
                 _precioH: precioH,
                 _precioHorm: precioHorm,
                 _alias: alias
             };
             const oSchema = new schemas_1.Obras(dSchema);
+            yield oSchema.save()
+                .then((doc) => res.send(doc))
+                .catch((err) => res.send('Error: ' + err));
+            yield database_1.db.desconectarBD();
+        });
+        this.postPilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { identif, nombreObra, diametro, profundidad } = req.body;
+            yield database_1.db.conectarBD();
+            const dSchema = {
+                _identif: identif,
+                _nombreObra: nombreObra,
+                _diametro: diametro,
+                _profundidad: profundidad,
+            };
+            const oSchema = new schemas_1.Pilotes(dSchema);
             yield oSchema.save()
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send('Error: ' + err));
@@ -86,7 +100,8 @@ class Routes {
     misRutas() {
         this._router.get('/obras', this.getObras),
             this._router.get('/obra/:alias', this.getObra),
-            this._router.post('/', this.postObra);
+            this._router.post('/', this.postObra),
+            this._router.post('/pilotes', this.postPilote);
     }
 }
 const obj = new Routes();
