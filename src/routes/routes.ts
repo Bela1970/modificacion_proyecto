@@ -77,6 +77,33 @@ class Routes {
         await db.desconectarBD()
     }
 
+    private getPilote = async (req: Request, res: Response) => {
+        const { identif } = req.params
+        await db.conectarBD()
+        const x = await Pilotes.find(
+                { _identif: identif }
+            )
+             // concatenando con cadena muestra mensaje
+        await db.desconectarBD()
+        res.json(x)
+    }
+
+    private getPilotes = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async (mensaje) => {
+            console.log(mensaje)
+            const query:any  = await Pilotes.find({})
+            console.log(query)
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+            console.log(mensaje)
+        })
+
+        await db.desconectarBD()
+    }
+
     private postPilote = async (req: Request, res: Response) => {
         const { identif, nombreObra, diametro , profundidad } = req.body
         await db.conectarBD()
@@ -93,11 +120,15 @@ class Routes {
         await db.desconectarBD()
     }
     
+     
     misRutas(){
         this._router.get('/obras', this.getObras),
         this._router.get('/obra/:alias', this.getObra),
         this._router.post('/', this.postObra),
+        this._router.get('/plts', this.getPilotes),
+        this._router.get('/plt/:identif', this.getPilote),
         this._router.post('/pilotes', this.postPilote)
+      
         
     }
 }

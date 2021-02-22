@@ -77,6 +77,28 @@ class Routes {
                 .catch((err) => res.send('Error: ' + err));
             yield database_1.db.desconectarBD();
         });
+        this.getPilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { identif } = req.params;
+            yield database_1.db.conectarBD();
+            const x = yield schemas_1.Pilotes.find({ _identif: identif });
+            // concatenando con cadena muestra mensaje
+            yield database_1.db.desconectarBD();
+            res.json(x);
+        });
+        this.getPilotes = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                console.log(mensaje);
+                const query = yield schemas_1.Pilotes.find({});
+                console.log(query);
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+                console.log(mensaje);
+            });
+            yield database_1.db.desconectarBD();
+        });
         this.postPilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { identif, nombreObra, diametro, profundidad } = req.body;
             yield database_1.db.conectarBD();
@@ -101,6 +123,8 @@ class Routes {
         this._router.get('/obras', this.getObras),
             this._router.get('/obra/:alias', this.getObra),
             this._router.post('/', this.postObra),
+            this._router.get('/plts', this.getPilotes),
+            this._router.get('/plt/:identif', this.getPilote),
             this._router.post('/pilotes', this.postPilote);
     }
 }
