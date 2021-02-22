@@ -60,14 +60,12 @@ class Routes {
     }
 
     private postObra = async (req: Request, res: Response) => {
-        const { nombre, localidad, fInicio, presupuesto , precioH, precioHorm, alias } = req.body
+        const { nombre, localidad, presupuesto , alias } = req.body
         await db.conectarBD()
         const dSchema={
             _nombre : nombre,
             _localidad : localidad,
             _presupuesto : presupuesto,
-            _precioH : precioH,
-            _precioHorm : precioHorm,
             _alias : alias
         }
         const oSchema = new Obras(dSchema)
@@ -83,7 +81,6 @@ class Routes {
         const x = await Pilotes.find(
                 { _identif: identif }
             )
-             // concatenando con cadena muestra mensaje
         await db.desconectarBD()
         res.json(x)
     }
@@ -105,13 +102,15 @@ class Routes {
     }
 
     private postPilote = async (req: Request, res: Response) => {
-        const { identif, nombreObra, diametro , profundidad } = req.body
+        const { identif, nombreObra, diametro , profundidad, precioH, precioHorm } = req.body
         await db.conectarBD()
         const dSchema={
             _identif : identif,
             _nombreObra : nombreObra,
             _diametro : diametro,
             _profundidad : profundidad,
+            _precioH : precioH,
+            _precioHorm : precioHorm
         }
         const oSchema = new Pilotes(dSchema)
         await oSchema.save()

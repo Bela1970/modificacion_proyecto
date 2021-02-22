@@ -7,8 +7,6 @@ const ObraSchema = new mongoose_1.Schema({
     _alias: String,
     _localidad: String,
     _presupuesto: Number,
-    _precioH: Number,
-    _precioHorm: Number,
 }, {
     collection: 'obras'
 });
@@ -17,6 +15,8 @@ const PiloteSchema = new mongoose_1.Schema({
     _nombreObra: String,
     _diametro: Number,
     _profundidad: Number,
+    _precioH: Number,
+    _precioHorm: Number,
 }, {
     collection: 'pilotes'
 });

@@ -5,8 +5,7 @@ const ObraSchema = new Schema({
     _alias : String,
     _localidad: String,
     _presupuesto: Number,
-    _precioH: Number,
-    _precioHorm: Number,
+    
 },{
     collection:'obras'
 })
@@ -17,6 +16,8 @@ const PiloteSchema = new Schema({
     _nombreObra: String,
     _diametro: Number,
     _profundidad: Number,
+    _precioH: Number,
+    _precioHorm: Number,
 },{
     collection:'pilotes'
 })
