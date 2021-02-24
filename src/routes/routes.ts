@@ -118,8 +118,44 @@ class Routes {
             .catch( (err: any) => res.send('Error: '+ err)) 
         await db.desconectarBD()
     }
-    
-     
+    private actualiza = async (req: Request, res: Response) => {
+        const { identif }= req.params
+        const { diametro ,profundidad, precioH, precioHorm } = req.body
+        await db.conectarBD()
+        await Pilotes.findOneAndUpdate(
+                { _identif: identif }, 
+                {
+                    _identif: identif,
+                    _diametro: diametro,
+                    _profundidad: profundidad,
+                    _precioH: precioH,
+                    _precioHorm: precioHorm
+                },
+                {
+                    new: true,
+                    runValidators: true // para que se ejecuten las validaciones del Schema
+                }  
+            )
+            .then( (docu) => {
+                if (docu==null){
+                    console.log('El pilote no existe')
+                    res.json({"Error":"No existe: "+identif})
+                } else {
+                    console.log('Modificado Correctamente: '+ docu) 
+                    res.json(docu)
+                }
+                
+            }
+        )
+        .catch( (err) => {
+            console.log('Error: '+err)
+            res.json({error: 'Error: '+err })
+        }
+        ) 
+    db.desconectarBD()
+}
+ 
+
     misRutas(){
         this._router.get('/obras', this.getObras),
         this._router.get('/obra/:alias', this.getObra),
@@ -127,7 +163,7 @@ class Routes {
         this._router.get('/plts', this.getPilotes),
         this._router.get('/plt/:identif', this.getPilote),
         this._router.post('/pilotes', this.postPilote)
-      
+        this._router.post('/actualiza/:identif', this.actualiza)
         
     }
 }

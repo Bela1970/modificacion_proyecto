@@ -113,6 +113,36 @@ class Routes {
                 .catch((err) => res.send('Error: ' + err));
             yield database_1.db.desconectarBD();
         });
+        this.actualiza = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { identif } = req.params;
+            const { diametro, profundidad, precioH, precioHorm } = req.body;
+            yield database_1.db.conectarBD();
+            yield schemas_1.Pilotes.findOneAndUpdate({ _identif: identif }, {
+                _identif: identif,
+                _diametro: diametro,
+                _profundidad: profundidad,
+                _precioH: precioH,
+                _precioHorm: precioHorm
+            }, {
+                new: true,
+                runValidators: true // para que se ejecuten las validaciones del Schema
+            })
+                .then((docu) => {
+                if (docu == null) {
+                    console.log('El pilote no existe');
+                    res.json({ "Error": "No existe: " + identif });
+                }
+                else {
+                    console.log('Modificado Correctamente: ' + docu);
+                    res.json(docu);
+                }
+            })
+                .catch((err) => {
+                console.log('Error: ' + err);
+                res.json({ error: 'Error: ' + err });
+            });
+            database_1.db.desconectarBD();
+        });
         this._router = express_1.Router();
     }
     get router() {
@@ -125,6 +155,7 @@ class Routes {
             this._router.get('/plts', this.getPilotes),
             this._router.get('/plt/:identif', this.getPilote),
             this._router.post('/pilotes', this.postPilote);
+        this._router.post('/actualiza/:identif', this.actualiza);
     }
 }
 const obj = new Routes();
