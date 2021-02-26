@@ -75,6 +75,45 @@ class Routes {
                 .catch((err) => res.send('Error: ' + err));
             yield database_1.db.desconectarBD();
         });
+        this.actualizaObra = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { alias } = req.params;
+            const { nombre, localidad, presupuesto } = req.body;
+            yield database_1.db.conectarBD();
+            yield schemas_1.Obras.findOneAndUpdate({ _alias: alias }, {
+                _nombre: nombre,
+                _localidad: localidad,
+                _presupuesto: presupuesto,
+            }, {
+                new: true,
+                runValidators: true
+            })
+                .then((doc) => {
+                if (doc == null) {
+                    console.log('La localidad que desea modificar no existe');
+                    res.json({ "Error": "No existe: " + alias });
+                }
+                else {
+                    console.log('Modificada Correctamente: ' + doc);
+                    res.json(doc);
+                }
+            })
+                .catch((err) => {
+                console.log('Error: ' + err);
+                res.json({ error: 'Error: ' + err });
+            });
+            database_1.db.desconectarBD();
+        });
+        this.deleteObra = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { alias } = req.params;
+            console.log(alias);
+            yield database_1.db.conectarBD();
+            yield schemas_1.Obras.findOneAndDelete({ _alias: alias })
+                .then((doc) => {
+                console.log(doc);
+                res.json(doc);
+            });
+            database_1.db.desconectarBD();
+        });
         this.getPilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { identif } = req.params;
             yield database_1.db.conectarBD();
@@ -113,33 +152,43 @@ class Routes {
                 .catch((err) => res.send('Error: ' + err));
             yield database_1.db.desconectarBD();
         });
-        this.actualiza = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.actualizaPilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { identif } = req.params;
             const { diametro, profundidad, precioH, precioHorm } = req.body;
             yield database_1.db.conectarBD();
             yield schemas_1.Pilotes.findOneAndUpdate({ _identif: identif }, {
-                _identif: identif,
                 _diametro: diametro,
                 _profundidad: profundidad,
                 _precioH: precioH,
-                _precioHorm: precioHorm
+                _precioHorm: precioHorm,
             }, {
                 new: true,
-                runValidators: true // para que se ejecuten las validaciones del Schema
+                runValidators: true
             })
-                .then((docu) => {
-                if (docu == null) {
-                    console.log('El pilote no existe');
+                .then((doc) => {
+                if (doc == null) {
+                    console.log('Ese pilote no existe');
                     res.json({ "Error": "No existe: " + identif });
                 }
                 else {
-                    console.log('Modificado Correctamente: ' + docu);
-                    res.json(docu);
+                    console.log('Modificación realizada correctamente: ' + doc);
+                    res.json(doc);
                 }
             })
                 .catch((err) => {
                 console.log('Error: ' + err);
                 res.json({ error: 'Error: ' + err });
+            });
+            database_1.db.desconectarBD();
+        });
+        this.deletePilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { identif } = req.params;
+            console.log(identif);
+            yield database_1.db.conectarBD();
+            yield schemas_1.Pilotes.findOneAndDelete({ _identif: identif })
+                .then((doc) => {
+                console.log(doc);
+                res.json(doc);
             });
             database_1.db.desconectarBD();
         });
@@ -152,12 +201,28 @@ class Routes {
         this._router.get('/obras', this.getObras),
             this._router.get('/obra/:alias', this.getObra),
             this._router.post('/', this.postObra),
-            this._router.get('/plts', this.getPilotes),
+            this._router.delete('/borra/:alias', this.deleteObra),
+            this._router.post('/actualiza/:alias', this.actualizaObra);
+        this._router.get('/plts', this.getPilotes),
             this._router.get('/plt/:identif', this.getPilote),
             this._router.post('/pilotes', this.postPilote);
-        this._router.post('/actualiza/:identif', this.actualiza);
+        this._router.post('/actualizaP/:identif', this.actualizaPilote),
+            this._router.delete('/borraP/:identif', this.deletePilote);
     }
 }
 const obj = new Routes();
 obj.misRutas();
 exports.routes = obj.router;
+/*,
+    (err:any, doc) => {
+            if(err) console.log(err)
+            else{
+                if (doc == null) {
+                    console.log(`No encontrado`)
+                    res.send(`No encontrado`)
+                }else {
+                    console.log('Borrado correcto: '+ doc)
+                    res.send('Borrado correcto: '+ doc)
+                }
+            }
+        }*/ 
