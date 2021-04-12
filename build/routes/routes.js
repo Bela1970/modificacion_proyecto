@@ -15,6 +15,17 @@ const schemas_1 = require("../model/schemas");
 const database_1 = require("../database/database");
 class Routes {
     constructor() {
+        this.getObr = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then(() => __awaiter(this, void 0, void 0, function* () {
+                const query = yield schemas_1.Obras.find();
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+            yield database_1.db.desconectarBD();
+        });
         this.getObras = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD()
                 .then(() => __awaiter(this, void 0, void 0, function* () {
@@ -198,7 +209,8 @@ class Routes {
         return this._router;
     }
     misRutas() {
-        this._router.get('/obras', this.getObras),
+        this._router.get('/obr', this.getObr),
+            this._router.get('/obras', this.getObras),
             this._router.get('/obra/:alias', this.getObra),
             this._router.post('/', this.postObra),
             this._router.delete('/borra/:alias', this.deleteObra),

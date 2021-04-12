@@ -12,6 +12,20 @@ class Routes {
         return this._router
     }
 
+    private getObr = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async () => {
+            const query = await Obras.find() 
+            res.json(query) 
+        })
+
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+
+        await db.desconectarBD()
+    }
+
     private getObras = async (req:Request, res: Response) => {
         await db.conectarBD()
         .then( async ()=> {
@@ -221,6 +235,7 @@ private deletePilote = async (req: Request, res: Response) => {
 
 
     misRutas(){
+        this._router.get('/obr', this.getObr),
         this._router.get('/obras', this.getObras),
         this._router.get('/obra/:alias', this.getObra),
         this._router.post('/', this.postObra),
