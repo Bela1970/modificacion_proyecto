@@ -126,9 +126,10 @@ class Routes {
             database_1.db.desconectarBD();
         });
         this.getPilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { identif } = req.params;
+            const { identif, obra } = req.params;
             yield database_1.db.conectarBD();
-            const x = yield schemas_1.Pilotes.find({ _identif: identif });
+            const x = yield schemas_1.Pilotes.findOne({ _identif: identif,
+                _obra: obra });
             yield database_1.db.desconectarBD();
             res.json(x);
         });
@@ -216,7 +217,7 @@ class Routes {
             this._router.delete('/borra/:alias', this.deleteObra),
             this._router.post('/actualiza/:alias', this.actualizaObra);
         this._router.get('/plts', this.getPilotes),
-            this._router.get('/plt/:identif', this.getPilote),
+            this._router.get('/plt/:identif&:obra', this.getPilote),
             this._router.post('/pilotes', this.postPilote);
         this._router.post('/actualizaP/:identif', this.actualizaPilote),
             this._router.delete('/borraP/:identif', this.deletePilote);

@@ -139,10 +139,11 @@ class Routes {
     }
 
     private getPilote = async (req: Request, res: Response) => {
-        const { identif } = req.params
+        const { identif,obra } = req.params
         await db.conectarBD()
-        const x = await Pilotes.find(
-                { _identif: identif }
+        const x = await Pilotes.findOne(
+                { _identif: identif,
+                _obra:obra }
             )
         await db.desconectarBD()
         res.json(x)
@@ -242,7 +243,7 @@ private deletePilote = async (req: Request, res: Response) => {
         this._router.delete('/borra/:alias', this.deleteObra),
         this._router.post('/actualiza/:alias', this.actualizaObra)
         this._router.get('/plts', this.getPilotes),
-        this._router.get('/plt/:identif', this.getPilote),
+        this._router.get('/plt/:identif&:obra', this.getPilote),
         this._router.post('/pilotes', this.postPilote)
         this._router.post('/actualizaP/:identif', this.actualizaPilote),
         this._router.delete('/borraP/:identif', this.deletePilote)
