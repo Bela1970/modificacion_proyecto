@@ -33,8 +33,8 @@ class Routes {
                 {
                     $lookup: {
                         from: 'pilotes',
-                        localField: '_nombre',
-                        foreignField: '_nombreObra',
+                        localField: 'nombre',
+                        foreignField: 'nombreObra',
                         as: "_pilotes_obra"
                     }
                 }
@@ -55,13 +55,13 @@ class Routes {
                 {
                     $lookup: {
                         from: 'pilotes',
-                        localField: '_nombre',
-                        foreignField: '_nombreObra',
+                        localField: 'nombre',
+                        foreignField: 'nombreObra',
                         as: "_pilotes_obra"
                     }
                 },{
                     $match: {
-                        _alias:alias
+                        alias:alias
                     }
                 }
             ])
@@ -77,10 +77,10 @@ class Routes {
         const { nombre, localidad, presupuesto , alias } = req.body
         await db.conectarBD()
         const dSchema={
-            _nombre : nombre,
-            _localidad : localidad,
-            _presupuesto : presupuesto,
-            _alias : alias
+            nombre : nombre,
+            localidad : localidad,
+            presupuesto : presupuesto,
+            alias : alias
         }
         const oSchema = new Obras(dSchema)
         await oSchema.save()
@@ -94,11 +94,11 @@ class Routes {
         const { nombre, localidad, presupuesto } = req.body
         await db.conectarBD()
         await Obras.findOneAndUpdate(
-                { _alias: alias }, 
+                { alias: alias }, 
                 {
-                    _nombre: nombre,
-                    _localidad: localidad,
-                    _presupuesto: presupuesto,
+                    nombre: nombre,
+                    localidad: localidad,
+                    presupuesto: presupuesto,
 
                 },
                 {
@@ -129,7 +129,7 @@ class Routes {
         const { alias } = req.params
         console.log(alias)
         await db.conectarBD()
-        await Obras.findOneAndDelete( { _alias:alias } )
+        await Obras.findOneAndDelete( { alias:alias } )
         .then(
             (doc: any) => {
                 console.log(doc)
@@ -142,7 +142,7 @@ class Routes {
         const { identif } = req.params
         await db.conectarBD()
         const x = await Pilotes.findOne(
-                { _identif: identif }
+                { identif: identif }
             )
         await db.desconectarBD()
         res.json(x)
@@ -168,12 +168,12 @@ class Routes {
         const { identif, nombreObra, diametro , profundidad, precioH, precioHorm } = req.body
         await db.conectarBD()
         const dSchema={
-            _identif : identif,
-            _nombreObra : nombreObra,
-            _diametro : diametro,
-            _profundidad : profundidad,
-            _precioH : precioH,
-            _precioHorm : precioHorm
+            identif : identif,
+            nombreObra : nombreObra,
+            diametro : diametro,
+            profundidad : profundidad,
+            precioH : precioH,
+            precioHorm : precioHorm
         }
         const oSchema = new Pilotes(dSchema)
         await oSchema.save()
@@ -187,12 +187,12 @@ class Routes {
         const { diametro, profundidad, precioH, precioHorm } = req.body
         await db.conectarBD()
         await Pilotes.findOneAndUpdate(
-                { _identif: identif }, 
+                { identif: identif }, 
                 {
-                    _diametro: diametro,
-                    _profundidad: profundidad,
-                    _precioH: precioH,
-                    _precioHorm: precioHorm,
+                    diametro: diametro,
+                    profundidad: profundidad,
+                    precioH: precioH,
+                    precioHorm: precioHorm,
 
                 },
                 {

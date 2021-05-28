@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose'
 
 const ObraSchema = new Schema({
-    _nombre: String,
-    _alias : String,
-    _localidad: String,
-    _presupuesto: Number,
+    nombre: String,
+    alias : String,
+    localidad: String,
+    presupuesto: Number,
     
 },{
     collection:'obras'
@@ -12,12 +12,12 @@ const ObraSchema = new Schema({
 
 
 const PiloteSchema = new Schema({
-    _identif: String,
-    _nombreObra: String,
-    _diametro: Number,
-    _profundidad: Number,
-    _precioH: Number,
-    _precioHorm: Number,
+    identif: String,
+    nombreObra: String,
+    diametro: Number,
+    profundidad: Number,
+    precioH: Number,
+    precioHorm: Number,
 },{
     collection:'pilotes'
 })

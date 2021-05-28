@@ -33,8 +33,8 @@ class Routes {
                     {
                         $lookup: {
                             from: 'pilotes',
-                            localField: '_nombre',
-                            foreignField: '_nombreObra',
+                            localField: 'nombre',
+                            foreignField: 'nombreObra',
                             as: "_pilotes_obra"
                         }
                     }
@@ -54,13 +54,13 @@ class Routes {
                     {
                         $lookup: {
                             from: 'pilotes',
-                            localField: '_nombre',
-                            foreignField: '_nombreObra',
+                            localField: 'nombre',
+                            foreignField: 'nombreObra',
                             as: "_pilotes_obra"
                         }
                     }, {
                         $match: {
-                            _alias: alias
+                            alias: alias
                         }
                     }
                 ]);
@@ -75,10 +75,10 @@ class Routes {
             const { nombre, localidad, presupuesto, alias } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
-                _nombre: nombre,
-                _localidad: localidad,
-                _presupuesto: presupuesto,
-                _alias: alias
+                nombre: nombre,
+                localidad: localidad,
+                presupuesto: presupuesto,
+                alias: alias
             };
             const oSchema = new schemas_1.Obras(dSchema);
             yield oSchema.save()
@@ -90,10 +90,10 @@ class Routes {
             const { alias } = req.params;
             const { nombre, localidad, presupuesto } = req.body;
             yield database_1.db.conectarBD();
-            yield schemas_1.Obras.findOneAndUpdate({ _alias: alias }, {
-                _nombre: nombre,
-                _localidad: localidad,
-                _presupuesto: presupuesto,
+            yield schemas_1.Obras.findOneAndUpdate({ alias: alias }, {
+                nombre: nombre,
+                localidad: localidad,
+                presupuesto: presupuesto,
             }, {
                 new: true,
                 runValidators: true
@@ -118,7 +118,7 @@ class Routes {
             const { alias } = req.params;
             console.log(alias);
             yield database_1.db.conectarBD();
-            yield schemas_1.Obras.findOneAndDelete({ _alias: alias })
+            yield schemas_1.Obras.findOneAndDelete({ alias: alias })
                 .then((doc) => {
                 console.log(doc);
                 res.json(doc);
@@ -128,7 +128,7 @@ class Routes {
         this.getPilote = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { identif } = req.params;
             yield database_1.db.conectarBD();
-            const x = yield schemas_1.Pilotes.findOne({ _identif: identif });
+            const x = yield schemas_1.Pilotes.findOne({ identif: identif });
             yield database_1.db.desconectarBD();
             res.json(x);
         });
@@ -150,12 +150,12 @@ class Routes {
             const { identif, nombreObra, diametro, profundidad, precioH, precioHorm } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
-                _identif: identif,
-                _nombreObra: nombreObra,
-                _diametro: diametro,
-                _profundidad: profundidad,
-                _precioH: precioH,
-                _precioHorm: precioHorm
+                identif: identif,
+                nombreObra: nombreObra,
+                diametro: diametro,
+                profundidad: profundidad,
+                precioH: precioH,
+                precioHorm: precioHorm
             };
             const oSchema = new schemas_1.Pilotes(dSchema);
             yield oSchema.save()
@@ -167,11 +167,11 @@ class Routes {
             const { identif } = req.params;
             const { diametro, profundidad, precioH, precioHorm } = req.body;
             yield database_1.db.conectarBD();
-            yield schemas_1.Pilotes.findOneAndUpdate({ _identif: identif }, {
-                _diametro: diametro,
-                _profundidad: profundidad,
-                _precioH: precioH,
-                _precioHorm: precioHorm,
+            yield schemas_1.Pilotes.findOneAndUpdate({ identif: identif }, {
+                diametro: diametro,
+                profundidad: profundidad,
+                precioH: precioH,
+                precioHorm: precioHorm,
             }, {
                 new: true,
                 runValidators: true
