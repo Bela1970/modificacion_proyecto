@@ -12,10 +12,10 @@ class Routes {
         return this._router
     }
 
-    private getObr = async (req: Request, res: Response) => {
+    /*private getObr = async (req: Request, res: Response) => {
         await db.conectarBD()
         .then( async () => {
-            const query = await Obras.find() 
+            const query = await modifObras.find() 
             res.json(query) 
         })
 
@@ -24,7 +24,7 @@ class Routes {
         })
 
         await db.desconectarBD()
-    }
+    }*/
 
     private getObras = async (req:Request, res: Response) => {
         await db.conectarBD()
@@ -219,7 +219,6 @@ class Routes {
         db.desconectarBD()
     }
 
-
 private deletePilote = async (req: Request, res: Response) => {
     const { identif } = req.params
     console.log(identif)
@@ -233,9 +232,7 @@ private deletePilote = async (req: Request, res: Response) => {
     db.desconectarBD()
 }
 
-
     misRutas(){
-        this._router.get('/obr', this.getObr),
         this._router.get('/obras', this.getObras),
         this._router.get('/obra/:alias', this.getObra),
         this._router.post('/', this.postObra),
@@ -253,18 +250,3 @@ const obj = new Routes()
 obj.misRutas()
 export const routes = obj.router
 
-
-
-/*, 
-    (err:any, doc) => {
-            if(err) console.log(err)
-            else{
-                if (doc == null) {
-                    console.log(`No encontrado`)
-                    res.send(`No encontrado`)
-                }else {
-                    console.log('Borrado correcto: '+ doc)
-                    res.send('Borrado correcto: '+ doc)
-                }
-            }
-        }*/
