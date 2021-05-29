@@ -198,7 +198,7 @@ class Routes {
             const { identif } = req.params;
             console.log(identif);
             yield database_1.db.conectarBD();
-            yield schemas_1.Pilotes.findOneAndDelete({ _identif: identif })
+            yield schemas_1.Pilotes.findOneAndDelete({ identif: identif })
                 .then((doc) => {
                 console.log(doc);
                 res.json(doc);

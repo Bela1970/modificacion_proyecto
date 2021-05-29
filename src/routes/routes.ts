@@ -223,7 +223,7 @@ private deletePilote = async (req: Request, res: Response) => {
     const { identif } = req.params
     console.log(identif)
     await db.conectarBD()
-    await Pilotes.findOneAndDelete( { _identif: identif } )
+    await Pilotes.findOneAndDelete( { identif: identif } )
     .then(
         (doc: any) => {
             console.log(doc)
